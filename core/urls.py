@@ -29,5 +29,5 @@ urlpatterns = [
 
     # path('transactions/', include('transactions.urls')),
 
-    # url(r'^', views.FrontendAppView.as_view()),
+    url(r'^', views.FrontendAppView.as_view()),
 ]

@@ -1,6 +1,6 @@
 export default class BaseService {
 	constructor() {
-		this.baseUrl = window.location.protocol + "//" + window.location.host + "/api";
+		this.baseUrl = window.location.protocol + "//" + window.location.host + "/api/";
 		this.urls = {
 			version : '',
 			all : '',

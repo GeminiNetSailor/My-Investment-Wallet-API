@@ -13,7 +13,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 
-import { withRouter, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 const styles = theme => ({
   main: {
@@ -50,7 +50,7 @@ const styles = theme => ({
 function SignIn(props) {
   const { classes } = props;
 
-  const { history } = props;
+  // const { history } = props;
   const { from } = props.location.state || { from: { pathname: '/' } };
   // if (localStorage.getItem(`token`)) {
   if (true) {

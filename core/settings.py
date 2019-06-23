@@ -63,6 +63,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
+    # 'DEFAULT_RENDERER_CLASSES': (
+    #     'rest_framework.renderers.JSONRenderer',
+    # )
 }
 
 CORS_ORIGIN_WHITELIST = (
@@ -90,7 +93,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'core.wsgi.application'
+WSGI_APPLICATION = 'wsgi.application'
 
 
 # Database
@@ -141,6 +144,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 REACT_APP_DIR = os.path.join(BASE_DIR, 'frontend')
 
