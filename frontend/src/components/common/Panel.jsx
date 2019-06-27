@@ -21,6 +21,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 import { Switch, Route } from 'react-router-dom';
 import BaseService from '../../services/baseService';
+import Transactions from '../../screens/Transactions';
 
 const drawerWidth = 240;
 
@@ -117,8 +118,8 @@ class EmptyComponent extends React.Component {
 	render() {
 		return (
 			<>{ this.state.apiResponse }</>
-		)
-	};
+		);
+	}
 }
 
 class Panel extends React.Component {
@@ -212,7 +213,10 @@ class Panel extends React.Component {
 							component={EmptyComponent}
 						/>
 						<Route
-							exact={true}
+							path='/transactions/'
+							component={Transactions}
+						/>
+						<Route
 							path='/sample/'
 							component={EmptyComponent}
 						/>

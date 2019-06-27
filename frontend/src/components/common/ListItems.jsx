@@ -8,6 +8,14 @@ import { Link } from "react-router-dom";
 
 export const mainListItems = (
 	<div>
+		<Link to='/transactions' style={{textDecoration: `none`}}>
+			<ListItem button>
+			<ListItemIcon>
+				<AssignmentIcon />
+			</ListItemIcon>
+			<ListItemText primary="Transactions" />
+			</ListItem>
+		</Link>
 		<Link to='/sample' style={{textDecoration: `none`}}>
 			<ListItem button>
 			<ListItemIcon>
