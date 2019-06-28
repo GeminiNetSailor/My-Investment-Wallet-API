@@ -49,7 +49,7 @@ export default class BaseService {
 	 * */
 
 	handleResponse(response) {
-
+		console.log(response)
 		if (400 <= response.status) return Promise.reject(response.statusText);
 
 		return response.text().then(text => {
