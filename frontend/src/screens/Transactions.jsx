@@ -1,8 +1,11 @@
-import React, { useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import NumberFormat from 'react-number-format';
-
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
 
 function NumberFormatCustom(props) {
   const { inputRef, onChange, ...other } = props;
@@ -29,82 +32,82 @@ NumberFormatCustom.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
-
-const MyComponent = ({ ...props }) => {
-  const total = Number(props.value);
-  const calculatedValue = useMemo(
-    () => {
-      return total + 10
-      // Do expensive calculation and return.
-    },
-    [total]
-  )
-
+export default () => {
+  const [originAccount,  setOriginAccount]  = React.useState();
+  const [cuentaDestino, setCuentaDestino] = React.useState();
+  const [amount,        setAmount]        = useState(1000);
+  const [exchangeRate,  setExchangeRate]  = useState(216329.24);
+  const [commission,  setCommission]      = useState(0);
+  
+  const returnAmount = Math.ceil( (amount / exchangeRate) * 100000000 ) / 100000000
+  const commissionAmount = returnAmount * .005
   return (
-    <div>
-      {calculatedValue}
-    </div>
-  )
-}
+    <>
 
+      <FormControl >
+        <InputLabel htmlFor="age-simple">Cuenta de Origen</InputLabel>
+        <Select
+          value={originAccount}
+          onChange={e => { setOriginAccount(e.target.value) }}
+        >
+          <MenuItem value={10}>MXN</MenuItem>
+          <MenuItem value={20}>Bitso MXN</MenuItem>
+          <MenuItem value={30}>Bitso MXN</MenuItem>
+        </Select>
+      </FormControl>
+      Saldo $100 MXN
 
-export default class Transactions extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      values: {
-        totalAmount: 0
-      }
-    }
-  }
+      <FormControl >
+        <InputLabel htmlFor="age-simple">Cuenta de Destino</InputLabel>
+        <Select
+          value={cuentaDestino}
+          onChange={e => { setCuentaDestino(e.target.value) }}
+        >
+          <MenuItem value={10}>MXN</MenuItem>
+          <MenuItem value={20}>Bitso MXN</MenuItem>
+          <MenuItem value={30}>Bitso MXN</MenuItem>
+        </Select>
+      </FormControl>
+      Saldo 0.05 BTC
 
-  componentDidUpdate() {
-
-  }
-
-  handleChange = name => event => {
-
-    this.setState({
-      values: {
-        [name]: event.target.value
-      }
-    })
-  };
-
-  NumberFormatCustom = props => {
-    const { inputRef, onChange, ...other } = props;
-
-    return (
-      <NumberFormat
-        {...other}
-        getInputRef={inputRef}
-        onValueChange={values => {
-          onChange({
-            target: {
-              value: values.value,
-            },
-          });
-
+      <TextField
+        label="Monto"
+        value={amount}
+        onChange={e => setAmount(e.target.value)}
+        InputProps={{
+          inputComponent: NumberFormatCustom,
         }}
-        thousandSeparator
-        prefix="$"
       />
-    );
-  }
 
-  render() {
-    return (
-      <div>
-        <MyComponent value={this.state.values["totalAmount"]} />
-        <TextField
-          label="react-number-format"
-          value={this.state.values[" totalAmount"]}
-          onChange={this.handleChange("totalAmount")}
-          InputProps={{
-            inputComponent: this.NumberFormatCustom,
-          }}
-        />
-      </div>
-    );
-  }
+      <TextField
+        label="Precio / Tipo de Cambio"
+        value={exchangeRate}
+        onChange={e => setExchangeRate(e.target.value)}
+      />
+      { returnAmount  } | 
+      { commissionAmount  }
+      <TextField
+        id="Precio / Tipo de Cambio"
+        label="Number"
+        value={exchangeRate}
+        onChange={e => setExchangeRate(e.target.value)}
+        type="number"
+        InputLabelProps={{
+          shrink: true,
+        }}
+      />
+      <TextField
+        id="Precio / Tipo de Cambio"
+        label="Number"
+        value={commission}
+        onChange={e => setCommission(e.target.value)}
+        type="number"
+        InputLabelProps={{
+          shrink: true,
+        }}
+      />
+
+    </>
+  );
+
 }

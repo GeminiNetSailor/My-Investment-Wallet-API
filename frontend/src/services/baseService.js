@@ -49,12 +49,11 @@ export default class BaseService {
 	 * */
 
 	handleResponse(response) {
+
+		if (400 <= response.status) return Promise.reject(response.statusText);
+
 		return response.text().then(text => {
-
-			if (400 <= response.status && response.status < 500) return Promise.reject(response.statusText);
-
 			if (text === 'Unauthorized') return;
-
 			const data = text && JSON.parse(text);
 			if (!response.ok) {
 				if (response.status === 401) {
