@@ -2,12 +2,22 @@ import React, { useState } from "react";
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import NumberFormat from 'react-number-format';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import InputLabel from '@material-ui/core/InputLabel';
 import { Grid, Paper, Typography } from "@material-ui/core";
+import Buy from "../components/Buy";
+import AccountSelect from "../components/AccountSelect";
+import SalesEstimator from "../components/SalesEstimator";
+import { makeStyles } from '@material-ui/core/styles';
 
+const payments = [
+  { name: 'Card type', detail: 'Visa' },
+  { name: 'Card holder', detail: 'Mr John Smith' },
+  { name: 'Card number', detail: 'xxxx-xxxx-xxxx-1234' },
+  { name: 'Expiry date', detail: '04/2024' },
+];
+
+
+
+const round = (value, decimals) => Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
 
 function NumberFormatCustom(props) {
   const { inputRef, onChange, ...other } = props;
@@ -34,203 +44,138 @@ NumberFormatCustom.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    padding: theme.spacing(3, 2),
+  },
+}));
+
 export default () => {
   // Account - Cuenta
   // Wallet - Cartera
+  const classes = useStyles();
 
-  const [originAccount, setOriginAccount] = React.useState('');
-  const [originCurrency, setOriginCurrency] = useState('');
+  const [accounts, setAccounts] = useState();
 
-  const [destinationAccount, setDestinationAccount] = React.useState('');
-  const [destinationCurrency, setDestinationCurrency] = useState('');
+  const [buy, setBuy] = useState({
+    accounts: {
+      origin: {
+        account: null,
+        currency: null
+      },
+      destination: {
+        account: null,
+        currency: null
+      }
+    },
+    totalCost: null,
+    exchangeRate: null,
+    comission: null,
+    reciveAmount: null
+  });
 
-  const [originAmount, setAmount] = useState(10000);
-  const [exchangeRate, setExchangeRate] = useState(237000.48);
-  const [commissionBuy, setCommissionBuy] = useState(0.005);
-  const [commissionSell, setCommissionSell] = useState(0.0065);
+  /*
+  * Buy
+  */
 
-  const [estimateProfitOrigin, setEstimateProfitOrigin] = useState(100);
+  // const buySubTotal = round(buyAmount / exchangeRate, 6);
 
-  const estimateReturnAmountOriginCurrency = originAmount;
-  const estimateReturnAmountDestinationCurrency = Math.ceil((originAmount / exchangeRate) * 100000000) / 100000000;
+  // const buyComisionFrom = round(buyAmount * commissionBuy, 4);
+  // const buyComisionTo = round(buySubTotal * commissionBuy, 6);
 
-  const commissionAmountOriginCurrency = originAmount * commissionBuy;
-  const commissionAmountDestinationCurrency = estimateReturnAmountDestinationCurrency * commissionBuy;
-  
-  const returnAmountOriginCurrency = estimateReturnAmountOriginCurrency - commissionAmountOriginCurrency;
-  const returnAmountDestinationCurrency = estimateReturnAmountDestinationCurrency - commissionAmountDestinationCurrency;
+  // const buyTotalFrom = round(buyAmount - buyComisionFrom, 4);
+  // const buyTotalTo = round(buySubTotal - buyComisionTo, 6);
 
-  const estimateSellValue = ((estimateReturnAmountOriginCurrency + estimateProfitOrigin) * (commissionSell + 1)) // MXN
-  
-  const sellComisionAmount = (estimateSellValue * commissionSell); //MXN
+  // /*
+  // * Estimate Sell
+  // */
+  // const sellSubTotalFrom = round((buyAmount + estimateProfitOrigin) * (commissionSell + 1), 4)
 
-  const sellExchangeAmount = estimateSellValue / returnAmountDestinationCurrency; //BTC
-  const estimateSellValueDestination = estimateSellValue / sellExchangeAmount //BTC
+  // const estimateSellExchangeRate = round(sellSubTotalFrom / buyTotalTo, 4);
+  // const exchangeRateDiference = round(estimateSellExchangeRate - exchangeRate, 4);
 
-  const destinationSellAmountComision = (sellComisionAmount / sellExchangeAmount); //BTC
+  // const sellSubTotalTo = round(sellSubTotalFrom / estimateSellExchangeRate, 6);
 
-  const returnTotal = (estimateSellValueDestination - destinationSellAmountComision) * sellExchangeAmount; //MXN
+  // const sellComisionFrom = round(sellSubTotalFrom * commissionSell, 4);
+  // const sellComisionTo = round(sellComisionFrom / estimateSellExchangeRate, 6);
+
+  // const sellTotalTo = round(sellSubTotalTo - sellComisionTo, 6);
+  // const sellTotalFrom = round(sellTotalTo * estimateSellExchangeRate, 4);
+
+  // /*
+  // * Buy To Sell Compare
+  // */
+
+  // const exchangeRateDiferencePorcentage = round(((estimateSellExchangeRate - exchangeRate) / exchangeRate) * 100, 4);
+  // const profitFrom = round(sellTotalFrom - buyAmount, 4);
+  // const profitFromPorcentage = round(((sellTotalFrom - buyAmount) / buyAmount) * 100, 4);
 
   return (
     <>
       <Grid container spacing={8}>
-
-        <Grid item xs={6}>
-          <Paper>
-
-            <Typography variant="h6" gutterBottom>Origen</Typography>
-
-            <Grid container spacing={8}>
-              <Grid item xs={12} sm={3}>
-                <FormControl >
-                  <InputLabel htmlFor="origin-account">Account</InputLabel>
-                  <Select
-                    value={originAccount}
-                    onChange={e => { setOriginAccount(e.target.value) }}
-                    inputProps={{
-                      name: 'origin-account',
-                      id: 'origin-account',
-                    }}
-                  >
-                    <MenuItem value={20}>Bitso</MenuItem>
-                    <MenuItem value={30}>HSBC</MenuItem>
-                    <MenuItem value={10}>Efectivo</MenuItem>
-                    <MenuItem value={30}>Bancomer</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-
-              <Grid item xs={12} sm={3}>
-                <FormControl >
-                  <InputLabel>Currency</InputLabel>
-                  <Select
-                    value={originCurrency}
-                    onChange={e => { setOriginCurrency(e.target.value) }}
-                  >
-                    <MenuItem value={20}>MXN</MenuItem>
-                    <MenuItem value={30}>USD</MenuItem>
-                    <MenuItem value={10}>BTC</MenuItem>
-                    <MenuItem value={30}>ETH</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-
+        <Grid item xs={4}>
+          <Grid container spacing={8}>
+            <Grid item xs={12}>
+              <Paper className={classes.root}>
+                <Grid container>
+                  <Grid item xs={6}>
+                    <Typography variant="h6" gutterBottom>Origen</Typography>
+                    <AccountSelect
+                      onChange={(account, currency) => {
+                        setBuy({
+                          ...buy,
+                          origin: {
+                            account,
+                            currency
+                          }
+                        });
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography variant="h6" gutterBottom>Destino</Typography>
+                    <AccountSelect
+                      onChange={(account, currency) => {
+                        setBuy({
+                          ...buy,
+                          desntination: {
+                            account,
+                            currency
+                          }
+                        });
+                      }}
+                    />
+                  </Grid>
+                </Grid>
+              </Paper>
             </Grid>
-
-          </Paper>
-        </Grid>
-
-        <Grid item xs={6}>
-          <Paper>
-
-            <Typography variant="h6" gutterBottom>Origen</Typography>
-
-            <Grid container spacing={8}>
-              <Grid item xs={12} sm={3}>
-                <FormControl >
-                  <InputLabel htmlFor="origin-account">Account</InputLabel>
-                  <Select
-                    value={destinationAccount}
-                    onChange={e => { setDestinationAccount(Number(e.target.value)) }}
-                    inputProps={{
-                      name: 'origin-account',
-                      id: 'origin-account',
-                    }}
-                  >
-                    <MenuItem value={20}>Bitso</MenuItem>
-                    <MenuItem value={30}>HSBC</MenuItem>
-                    <MenuItem value={10}>Efectivo</MenuItem>
-                    <MenuItem value={30}>Bancomer</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-
-              <Grid item xs={12} sm={3}>
-                <FormControl >
-                  <InputLabel>Currency</InputLabel>
-                  <Select
-                    value={destinationCurrency}
-                    onChange={e => { setDestinationCurrency(e.target.value) }}
-                  >
-                    <MenuItem value={20}>MXN</MenuItem>
-                    <MenuItem value={30}>USD</MenuItem>
-                    <MenuItem value={10}>BTC</MenuItem>
-                    <MenuItem value={30}>ETH</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-
+          </Grid>
+          <Grid container spacing={8}>
+            <Grid item xs={12}>
+              <Paper>
+                <Buy
+                  onChange={(totalCost, exchangeRate, comission, reciveAmount) => {
+                    setBuy({
+                      ...buy,
+                      totalCost,
+                      exchangeRate,
+                      comission,
+                      reciveAmount
+                    })
+                  }}
+                />
+              </Paper>
             </Grid>
-
-          </Paper>
+          </Grid>
         </Grid>
-
-      </Grid>
-
-      <Grid container spacing={8}>
-        <Grid item xs={12}>
+        <Grid item xs={8}>
           <Paper>
-            <TextField
-              label="Monto"
-              value={originAmount}
-              onChange={e => setAmount(Number(e.target.value))}
-              InputProps={{
-                inputComponent: NumberFormatCustom,
-              }}
-            />
-            <TextField
-              label="Precio / Tipo de Cambio"
-              value={exchangeRate}
-              onChange={e => setExchangeRate(Number(e.target.value))}
-            />
-            <TextField
-              label="Buy Comision"
-              value={commissionBuy}
-              onChange={e => setCommissionBuy(Number(e.target.value))}
-            />
-            <TextField
-              label="Sell Comision"
-              value={commissionSell}
-              onChange={e => setCommissionSell(Number(e.target.value))}
-            />
-            <TextField
-              label="Estimated Profit"
-              value={estimateProfitOrigin}
-              onChange={e => setEstimateProfitOrigin(Number(e.target.value))}
-              InputProps={{
-                inputComponent: NumberFormatCustom,
-              }}
+            <SalesEstimator
+              buy={buy}
             />
           </Paper>
         </Grid>
       </Grid>
-
-      <Grid container spacing={8}>
-
-        <Grid item xs={12}>
-          <Paper>
-            <p>
-            Sub Total a recibir: {estimateReturnAmountDestinationCurrency} | ${estimateReturnAmountOriginCurrency}
-            </p>
-            <p>
-            Comision: {commissionAmountDestinationCurrency} | ${commissionAmountOriginCurrency} 
-            </p>
-            <p>
-            Total: {returnAmountDestinationCurrency} | ${returnAmountOriginCurrency}
-            </p>
-            <p>
-              Sell Amount: ${estimateSellValue} =   BTC {estimateSellValueDestination} | - Comision ${sellComisionAmount}
-            </p>
-            <p>
-              Sell Point: {sellExchangeAmount} | Diference: {sellExchangeAmount - exchangeRate} | diferencia del %{( (sellExchangeAmount - exchangeRate) / exchangeRate ) * 100}
-            </p>
-            <p>
-              return + Profit: {returnTotal}
-            </p>
-          </Paper>
-        </Grid>
-      </Grid>
-
     </>
   );
 
