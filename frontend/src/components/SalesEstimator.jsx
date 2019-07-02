@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import TextField from '@material-ui/core/TextField';
 import NumberFormat from 'react-number-format';
 import { Grid, Paper, Typography } from "@material-ui/core";
+import { DecimalFormat } from "./helpers/NumbersFormaters";
 
 const round = (value, decimals) => Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
 
@@ -37,7 +38,8 @@ export default props => {
   */
   const sellSubTotalFrom = round((buy.totalCost + estimateProfit) * (comision + 1), 4)
 
-  const estimateSellExchangeRate = round(sellSubTotalFrom / buy.buyTotalTo, 4);
+  const estimateSellExchangeRate = round(sellSubTotalFrom / buy.reciveAmount, 4);
+
   const exchangeRateDiference = round(estimateSellExchangeRate - buy.exchangeRate, 4);
 
   const sellSubTotalTo = round(sellSubTotalFrom / estimateSellExchangeRate, 6);
@@ -47,7 +49,7 @@ export default props => {
 
   const sellTotalTo = round(sellSubTotalTo - sellComisionTo, 6);
   const sellTotalFrom = round(sellTotalTo * estimateSellExchangeRate, 4);
-  
+
   /*
   * Buy To Sell Compare
   */
@@ -64,6 +66,9 @@ export default props => {
           label="Sell Comision"
           value={comision}
           onChange={e => setcomision(Number(e.target.value))}
+          InputProps={{
+            inputComponent: DecimalFormat,
+          }}
         />
         <TextField
           label="Estimated Profit"
