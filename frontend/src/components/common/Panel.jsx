@@ -11,13 +11,16 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import AddIcon from '@material-ui/icons/Add';
 import Lock from '@material-ui/icons/Lock';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems, secondaryListItems } from './ListItems';
+import { Link } from "react-router-dom";
 
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Fab from '@material-ui/core/Fab';
 
 import { Switch, Route } from 'react-router-dom';
 import BaseService from '../../services/baseService';
@@ -100,6 +103,11 @@ const styles = theme => ({
 	h5: {
 		marginBottom: theme.spacing.unit * 2,
 	},
+	fab: {
+		position: 'absolute',
+		bottom: theme.spacing.unit * 3,
+		right: theme.spacing.unit * 3,
+	},
 });
 
 class EmptyComponent extends React.Component {
@@ -112,12 +120,12 @@ class EmptyComponent extends React.Component {
 	}
 	componentDidMount() {
 		this.service.find().then(response => {
-			this.setState({apiResponse:JSON.stringify(response)})
+			this.setState({ apiResponse: JSON.stringify(response) })
 		})
 	}
 	render() {
 		return (
-			<>{ this.state.apiResponse }</>
+			<>{this.state.apiResponse}</>
 		);
 	}
 }
@@ -213,16 +221,21 @@ class Panel extends React.Component {
 							component={EmptyComponent}
 						/>
 						<Route
-							path='/transactions/'
+							path='/new-transaction/'
 							component={Transactions}
 						/>
 						<Route
-							path='/sample/'
+							path='/transactions/'
 							component={EmptyComponent}
 						/>
 						}
 					</Switch>
 				</main>
+				<Link to='/new-transaction' style={{ textDecoration: `none` }}>
+					<Fab aria-label={`Add`} className={classes.fab} color={`primary`}>
+						<AddIcon />
+					</Fab>
+				</Link>
 			</div>
 		);
 	}
