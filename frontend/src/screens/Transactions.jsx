@@ -1,51 +1,31 @@
 import React, { useState } from "react";
 import PropTypes from 'prop-types';
+
 import NumberFormat from 'react-number-format';
+
 import { Grid, Paper, Typography } from "@material-ui/core";
+import { makeStyles } from '@material-ui/core/styles';
+
 import Buy from "../components/Buy";
 import AccountSelect from "../components/AccountSelect";
 import SalesEstimator from "../components/SalesEstimator";
-import { makeStyles } from '@material-ui/core/styles';
 
-const round = (value, decimals) => Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
 
 const useStyles = makeStyles(theme => ({
   paper: {
     padding: theme.spacing(3, 2),
   },
+  inputField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 200,
+  },
 }));
-
-function NumberFormatCustom(props) {
-  const { inputRef, onChange, ...other } = props;
-
-  return (
-    <NumberFormat
-      {...other}
-      getInputRef={inputRef}
-      onValueChange={values => {
-        onChange({
-          target: {
-            value: values.value,
-          },
-        });
-      }}
-      thousandSeparator
-      prefix="$"
-    />
-  );
-}
-
-NumberFormatCustom.propTypes = {
-  inputRef: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired,
-};
 
 export default () => {
   // Account - Cuenta
   // Wallet - Cartera
   const classes = useStyles();
-
-  const [accounts, setAccounts] = useState();
 
   const [buy, setBuy] = useState({
     accounts: {

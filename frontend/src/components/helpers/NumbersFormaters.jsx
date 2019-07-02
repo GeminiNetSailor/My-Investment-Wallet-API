@@ -21,6 +21,7 @@ export function CurrencyFormat(props) {
     );
 }
 
+
 export function DecimalFormat(props) {
     const { inputRef, onChange, ...other } = props;
 
