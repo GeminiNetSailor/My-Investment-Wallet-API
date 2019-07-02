@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TextField from '@material-ui/core/TextField';
 import NumberFormat from 'react-number-format';
-import { Grid, Paper, Typography } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { DecimalFormat } from "./helpers/NumbersFormaters";
 
 const round = (value, decimals) => Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
@@ -48,15 +48,15 @@ export default props => {
   const sellComisionTo = round(sellComisionFrom / estimateSellExchangeRate, 6);
 
   const sellTotalTo = round(sellSubTotalTo - sellComisionTo, 6);
-  const sellTotalFrom = round(sellTotalTo * estimateSellExchangeRate, 4);
-
+  const total = round(sellTotalTo * estimateSellExchangeRate, 4);
+  
   /*
   * Buy To Sell Compare
   */
 
   const exchangeRateDiferencePorcentage = round(((estimateSellExchangeRate - buy.exchangeRate) / buy.exchangeRate) * 100, 4);
-  const profitFrom = round(sellTotalFrom - buy.totalCost, 4);
-  const profitFromPorcentage = round(((sellTotalFrom - buy.totalCost) / buy.totalCost) * 100, 4);
+  const profitFrom = round(total - buy.totalCost, 4);
+  const profitFromPorcentage = round(((total - buy.totalCost) / buy.totalCost) * 100, 4);
 
 
   return (
@@ -78,20 +78,51 @@ export default props => {
             inputComponent: NumberFormatCustom,
           }}
         />
-        <h2>Estimate Sell at <NumberFormat value={estimateSellExchangeRate} displayType={'text'} thousandSeparator={true} prefix={'$'} /></h2>
-        <small>Diffence from buy: <NumberFormat value={exchangeRateDiference} displayType={'text'} thousandSeparator={true} prefix={'$'} /> <NumberFormat value={exchangeRateDiferencePorcentage} displayType={'text'} thousandSeparator={true} prefix={'%'} /></small>
-        <p>
-          SubTotal: <NumberFormat value={sellSubTotalFrom} displayType={'text'} thousandSeparator={true} prefix={'$'} /> | <NumberFormat value={sellSubTotalTo} displayType={'text'} thousandSeparator={true} prefix={'BTC '} />
-        </p>
-        <p>
-          Comision <NumberFormat value={sellComisionTo} displayType={'text'} thousandSeparator={true} prefix={'BTC '} /> | <NumberFormat value={sellComisionFrom} displayType={'text'} thousandSeparator={true} prefix={'$'} />
-        </p>
-        <p>
-          Total: <NumberFormat value={sellTotalFrom} displayType={'text'} thousandSeparator={true} prefix={'$'} />
-        </p>
-        <p>
-          Profit: <NumberFormat value={profitFrom} displayType={'text'} thousandSeparator={true} prefix={'$'} /> | <NumberFormat value={profitFromPorcentage} displayType={'text'} thousandSeparator={true} prefix={'%'} />
-        </p>
+      </Grid>
+      <Grid item container xs={12} sm={12}>
+        <Grid item xs={12}>
+          <h2>Estimate Sell at <NumberFormat value={estimateSellExchangeRate} displayType={'text'} thousandSeparator={true} prefix={'$'} /></h2>
+          <small>Diffence from buy: <NumberFormat value={exchangeRateDiference} displayType={'text'} thousandSeparator={true} prefix={'$'} /> <NumberFormat value={exchangeRateDiferencePorcentage} displayType={'text'} thousandSeparator={true} prefix={'%'} /></small>
+        </Grid>
+        <Grid item xs={6}>
+          <Typography gutterBottom>SubTotal</Typography>
+        </Grid>
+
+        <Grid item xs={6}>
+          <Typography gutterBottom>
+            <NumberFormat value={sellSubTotalFrom} displayType={'text'} thousandSeparator={true} prefix={'$'} /> | <NumberFormat value={sellSubTotalTo} displayType={'text'} thousandSeparator={true} prefix={'BTC '} />
+          </Typography>
+        </Grid>
+
+        <Grid item xs={6}>
+          <Typography gutterBottom>Comision</Typography>
+        </Grid>
+
+        <Grid item xs={6}>
+          <Typography gutterBottom>
+            <NumberFormat value={sellComisionFrom} displayType={'text'} thousandSeparator={true} prefix={'$'} /> | <NumberFormat value={sellComisionTo} displayType={'text'} thousandSeparator={true} prefix={'BTC '} />
+          </Typography>
+        </Grid>
+
+        <Grid item xs={6}>
+          <Typography gutterBottom>Total</Typography>
+        </Grid>
+
+        <Grid item xs={6}>
+          <Typography gutterBottom>
+            <NumberFormat value={total} displayType={'text'} thousandSeparator={true} prefix={'$'} /> | <NumberFormat value={sellTotalTo} displayType={'text'} thousandSeparator={true} prefix={'BTC '} />
+          </Typography>
+        </Grid>
+
+        <Grid item xs={6}>
+          <Typography gutterBottom>Profit</Typography>
+        </Grid>
+
+        <Grid item xs={6}>
+          <Typography gutterBottom>
+            <NumberFormat value={profitFrom} displayType={'text'} thousandSeparator={true} prefix={'$'} /> | <NumberFormat value={profitFromPorcentage} displayType={'text'} thousandSeparator={true} prefix={'%'} />
+          </Typography>
+        </Grid>
       </Grid>
     </Grid>
   );

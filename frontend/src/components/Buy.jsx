@@ -3,25 +3,23 @@ import TextField from '@material-ui/core/TextField';
 import { Grid, Typography } from "@material-ui/core";
 import { CurrencyFormat, DecimalFormat } from "./helpers/NumbersFormaters";
 import NumberFormat from 'react-number-format';
-import { makeStyles } from '@material-ui/core/styles';
+// import { makeStyles } from '@material-ui/core/styles';
 
 const round = (value, decimals) => Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
 
-
-const useStyles = makeStyles(theme => ({
-  paper: {
-    padding: theme.spacing(3, 2),
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    width: 200,
-  }
-}));
+// const useStyles = makeStyles(theme => ({
+//   paper: {
+//     padding: theme.spacing(3, 2),
+//   },
+//   textField: {
+//     marginLeft: theme.spacing(1),
+//     marginRight: theme.spacing(1),
+//     width: 200,
+//   }
+// }));
 
 export default props => {
-  const classes = useStyles();
-
+  // const classes = useStyles();
   const [buyAmount, setBuyAmount] = useState(10000);
   const [exchangeRate, setExchangeRate] = useState(190999.99);
   const [commissionBuy, setCommissionBuy] = useState(0.005);
@@ -33,17 +31,16 @@ export default props => {
 
   const totalFrom = round(buyAmount - comisionFrom, 4);
   const totalTo = round(subTotal - comisionTo, 6);
-
-  useEffect(
-    () => {
+  
+  useEffect(() => {
       props.onChange(
         buyAmount,
         exchangeRate,
         commissionBuy,
         totalTo
       )
-    }
-    , [buyAmount, exchangeRate, commissionBuy, totalTo]);
+    // eslint-disable-next-line
+    }, [buyAmount, exchangeRate, commissionBuy, totalTo]);
 
   return (
     <Grid container>

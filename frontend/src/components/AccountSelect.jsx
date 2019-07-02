@@ -18,50 +18,49 @@ export default props => {
   const [account, setAccount] = useState('');
   const [currency, setCurrency] = useState('');
 
-  useEffect(
-    () => {
-      props.onChange(
-        account,
-        currency
-      )
-    }
-    , [account, currency]);
+  useEffect(() => {
+    props.onChange(
+      account,
+      currency
+    )
+    // eslint-disable-next-line
+  }, [account, currency]);
 
   return (
-      <form autoComplete="off">
-        <FormControl className={classes.formControl} >
-          <InputLabel htmlFor="origin-account">Account</InputLabel>
-          <Select
-            value={account}
-            onChange={e => { setAccount(e.target.value) }}
-            inputProps={{
-              name: 'origin-account',
-              id: 'origin-account',
-            }}
-            className={classes.select}
-          >
-            <MenuItem value={20}>Bitso</MenuItem>
-            <MenuItem value={30}>HSBC</MenuItem>
-            <MenuItem value={10}>Efectivo</MenuItem>
-            <MenuItem value={30}>Bancomer</MenuItem>
-          </Select>
-        </FormControl>
+    <form autoComplete="off">
+      <FormControl className={classes.formControl} >
+        <InputLabel htmlFor="origin-account">Account</InputLabel>
+        <Select
+          value={account}
+          onChange={e => { setAccount(e.target.value) }}
+          inputProps={{
+            name: 'origin-account',
+            id: 'origin-account',
+          }}
+          className={classes.select}
+        >
+          <MenuItem value={20}>Bitso</MenuItem>
+          <MenuItem value={30}>HSBC</MenuItem>
+          <MenuItem value={10}>Efectivo</MenuItem>
+          <MenuItem value={30}>Bancomer</MenuItem>
+        </Select>
+      </FormControl>
 
-        <FormControl className={classes.formControl} >
-          <InputLabel>Currency</InputLabel>
-          <Select
-            value={currency}
-            onChange={e => { setCurrency(e.target.value) }}
-            className={classes.select}
-          >
-            <MenuItem value={20}>MXN</MenuItem>
-            <MenuItem value={30}>USD</MenuItem>
-            <MenuItem value={10}>BTC</MenuItem>
-            <MenuItem value={30}>ETH</MenuItem>
-          </Select>
-        </FormControl>
+      <FormControl className={classes.formControl} >
+        <InputLabel>Currency</InputLabel>
+        <Select
+          value={currency}
+          onChange={e => { setCurrency(e.target.value) }}
+          className={classes.select}
+        >
+          <MenuItem value={20}>MXN</MenuItem>
+          <MenuItem value={30}>USD</MenuItem>
+          <MenuItem value={10}>BTC</MenuItem>
+          <MenuItem value={30}>ETH</MenuItem>
+        </Select>
+      </FormControl>
 
-      </form >
+    </form >
 
   );
 }
