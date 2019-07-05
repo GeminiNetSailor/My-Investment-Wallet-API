@@ -29,7 +29,6 @@ function NumberFormatCustom(props) {
 export default props => {
 
   const { buy } = props;
-  console.log(props)
   const [comision, setcomision] = useState(0.0065);
   const [estimateProfit, setEstimateProfit] = useState(100);
 

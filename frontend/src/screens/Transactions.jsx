@@ -36,9 +36,10 @@ export default () => {
     },
     totalCost: null,
     exchangeRate: null,
-    comission: null,
+    commission: null,
     reciveAmount: null
   });
+
 
   return (
     <Grid container spacing={8}>
@@ -89,12 +90,12 @@ export default () => {
           <Grid item xs={12}>
             <Paper className={classes.paper}>
               <Buy
-                onChange={(totalCost, exchangeRate, comission, reciveAmount) => {
+                onChange={(totalCost, exchangeRate, commission, reciveAmount) => {
                   setBuy({
                     ...buy,
                     totalCost,
                     exchangeRate,
-                    comission,
+                    commission,
                     reciveAmount
                   })
                 }}

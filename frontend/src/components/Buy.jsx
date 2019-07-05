@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import TextField from '@material-ui/core/TextField';
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography, Button } from "@material-ui/core";
 import { CurrencyFormat, DecimalFormat } from "./helpers/NumbersFormaters";
 import NumberFormat from 'react-number-format';
+import Transactions from "../services/transactions";
 // import { makeStyles } from '@material-ui/core/styles';
 
 const round = (value, decimals) => Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
@@ -31,20 +32,30 @@ export default props => {
 
   const totalFrom = round(buyAmount - comisionFrom, 4);
   const totalTo = round(subTotal - comisionTo, 6);
-  
+
   useEffect(() => {
-      props.onChange(
-        buyAmount,
-        exchangeRate,
-        commissionBuy,
-        totalTo
-      )
+    props.onChange(
+      buyAmount,
+      exchangeRate,
+      commissionBuy,
+      totalTo
+    )
     // eslint-disable-next-line
-    }, [buyAmount, exchangeRate, commissionBuy, totalTo]);
+  }, [buyAmount, exchangeRate, commissionBuy, totalTo]);
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    const transactions = new Transactions();
+    transactions.create({
+      totalFrom,
+      buyAmount,
+      comisionFrom,
+      exchangeRate
+    })
+  }
 
   return (
     <Grid container>
-
       <Grid item xs={12}>
         <Typography variant="h6" gutterBottom>Buy</Typography>
       </Grid>
@@ -109,6 +120,9 @@ export default props => {
           </Typography>
         </Grid>
       </Grid>
+      <Button variant="contained" color="primary" onClick={handleSubmit}>
+        Primary
+      </Button>
     </Grid>
   );
 }
