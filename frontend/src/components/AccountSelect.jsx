@@ -38,7 +38,7 @@ export default props => {
   }, [account, currency]);
 
   useEffect(() => {
-    accountsGroupsServices.find().then(result => setAccountsGroups(result));
+    accountsGroupsServices.accountsServices.find(account).then(result => setAccounts(result));
     // eslint-disable-next-line
   }, [account]);
 
@@ -48,7 +48,7 @@ export default props => {
         <InputLabel htmlFor="origin-account">Account</InputLabel>
         <Select
           value={account}
-          onChange={e => setAccount(e.target.value) }
+          onChange={e => setAccount(e.target.value)}
           className={classes.select}
         >
           {
@@ -68,10 +68,13 @@ export default props => {
           onChange={e => { setCurrency(e.target.value) }}
           className={classes.select}
         >
-          <MenuItem value={20}>MXN</MenuItem>
-          <MenuItem value={30}>USD</MenuItem>
-          <MenuItem value={10}>BTC</MenuItem>
-          <MenuItem value={30}>ETH</MenuItem>
+          {
+            accounts.map(({ id, name }) => {
+              return (
+                <MenuItem value={id}>{name}</MenuItem>
+              )
+            })
+          }
         </Select>
       </FormControl>
 

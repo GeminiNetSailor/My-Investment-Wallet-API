@@ -15,14 +15,14 @@ class AccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Account
-        fields = '__all__'
+        fields = ('id', 'name')
 
 
 class AccountsGroupSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(
         read_only=True
     )
-    account_set = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    account_set = AccountSerializer(many=True, read_only=True)
     class Meta:
         model = models.AccountsGroup
         fields = ('id', 'name', 'account_set')

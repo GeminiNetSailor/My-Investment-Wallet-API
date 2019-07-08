@@ -1,5 +1,7 @@
+from django.http import JsonResponse
 from rest_framework import viewsets
-from rest_framework.decorators import permission_classes, authentication_classes
+from rest_framework.decorators import permission_classes, authentication_classes, action
+from rest_framework.response import Response
 
 from . import models, serializers
 
@@ -15,6 +17,12 @@ class AccountsGroupViewSet(viewsets.ModelViewSet):
     queryset = models.AccountsGroup.objects.all()
     serializer_class = serializers.AccountsGroupSerializer
 
+    @action(detail=True)
+    def accounts(self, request, pk=None):
+        accountGroup = models.AccountsGroup.objects.get(pk=pk)
+        accounts = accountGroup.account_set.all()
+        serializer = serializers.AccountSerializer(accounts, many=True)
+        return JsonResponse(serializer.data, safe=False)
 
 @authentication_classes([])
 @permission_classes([])
