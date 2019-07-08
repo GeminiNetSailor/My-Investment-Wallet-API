@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from wallet.models import CurrencyType, AccountsGroup, Account, Transaction
+
+admin.site.register(CurrencyType)
+admin.site.register(AccountsGroup)
+admin.site.register(Account)
+admin.site.register(Transaction)

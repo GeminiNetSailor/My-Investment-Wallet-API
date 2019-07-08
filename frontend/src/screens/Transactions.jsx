@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 // import PropTypes from 'prop-types';
 
-import { Grid, Paper, Typography } from "@material-ui/core";
+import { Grid, Paper, Typography, Button } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
 
 import Buy from "../components/Buy";
 import AccountSelect from "../components/AccountSelect";
 import SalesEstimator from "../components/SalesEstimator";
+import CurrenciesTypes from "../services/currencyTypes";
 
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+  },
   paper: {
     padding: theme.spacing(3, 2),
   },
@@ -40,24 +44,78 @@ export default () => {
     reciveAmount: null
   });
 
+  const [transaction, setTransaction] = useState({
+    id: null,
+    subTotal: null,
+    total: null,
+    exchangeRate: null,
+    receivedType: null,
+    receivedAmount: null,
+    commission: null,
+    accounts: {
+      from: {
+        account: null,
+        currency: null
+      },
+      to: {
+        account: null,
+        currency: null
+      }
+    }
+  });
+
+  const [estimate, setEstimate] = useState({
+    transactionId: null,
+    subTotal: null,
+    total: null,
+    exchangeRate: null,
+    receivedType: null,
+    receivedAmount: null,
+    commission: null,
+    accounts: {
+      from: {
+        account: null,
+        currency: null
+      },
+      to: {
+        account: null,
+        currency: null
+      }
+    }
+  });
+
+  const handleSave = event => {
+    event.preventDefault();
+    const currenciesTypes = new CurrenciesTypes();
+    const test = currenciesTypes.find();
+    console.log(test);
+  }
+
+  const handleSaveTransaction = () => {
+
+  }
+
+  const handleSaveEstimate = () => {
+
+  }
 
   return (
-    <Grid container spacing={8}>
+    <Grid container className={classes.root} spacing={8}>
 
-      <Grid item xs={4}>
+      <Grid item md={4}>
 
         <Grid container spacing={8}>
-          <Grid item xs={12}>
+          <Grid item md={12}>
             <Paper className={classes.paper}>
               <Grid container>
 
-                <Grid item xs={6}>
+                <Grid item md={6}>
                   <Typography variant="h6" gutterBottom>Origen</Typography>
                   <AccountSelect
                     onChange={(account, currency) => {
-                      setBuy({
-                        ...buy,
-                        origin: {
+                      setTransaction({
+                        ...transaction,
+                        account: {
                           account,
                           currency
                         }
@@ -66,7 +124,7 @@ export default () => {
                   />
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item md={6}>
                   <Typography variant="h6" gutterBottom>Destino</Typography>
                   <AccountSelect
                     onChange={(account, currency) => {
@@ -87,7 +145,7 @@ export default () => {
         </Grid>
 
         <Grid container spacing={8}>
-          <Grid item xs={12}>
+          <Grid item md={12}>
             <Paper className={classes.paper}>
               <Buy
                 onChange={(totalCost, exchangeRate, commission, reciveAmount) => {
@@ -106,7 +164,7 @@ export default () => {
 
       </Grid>
 
-      <Grid item xs={8}>
+      <Grid item md={8}>
         <Paper className={classes.paper}>
           <SalesEstimator
             buy={buy}
@@ -114,6 +172,9 @@ export default () => {
         </Paper>
       </Grid>
 
+      <Button variant="contained" color="primary" onClick={handleSave}>
+        Guardar
+      </Button>
     </Grid>
   );
 

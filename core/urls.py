@@ -21,6 +21,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 
 urlpatterns = [
     path('api/', views.api),
+    path('api/alpha/', include('wallet.urls')),
     path('current_user/', views.current_user),
     path('users/', views.UserList.as_view()),
     path('token-auth/', obtain_jwt_token),

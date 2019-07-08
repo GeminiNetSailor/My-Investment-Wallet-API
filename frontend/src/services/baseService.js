@@ -1,15 +1,16 @@
 export default class BaseService {
 	constructor() {
 		this.baseUrl = window.location.protocol + "//" + window.location.host + "/api/";
-		this.urls = {
-			version : 'beta/',
-			all : '',
+		this.url = {
+			version : 'alpha/',
+			route : '',
 		}
 	}
 
-	find(params) {
-		var url = new URL(`${this.urls.version}${this.urls.all}`, this.baseUrl);
-		if (params) Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+	find( id ) {
+		const path = this.url.version + this.url.route + ( id ? `${id}/` : "" )
+		var url = new URL(path, this.baseUrl);
+		// if (params) Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
 
 		var requestOptions = {
 			method: 'GET',

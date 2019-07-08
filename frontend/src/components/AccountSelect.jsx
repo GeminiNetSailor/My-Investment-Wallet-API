@@ -5,6 +5,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import { makeStyles } from '@material-ui/core/styles';
+import AccountsGroupsServices from "../services/accountsGroupsServices";
 
 const useStyles = makeStyles(theme => ({
   formControl: {
@@ -15,16 +16,31 @@ const useStyles = makeStyles(theme => ({
 
 export default props => {
   const classes = useStyles();
+
+  const [accountsGroups, setAccountsGroups] = useState([]);
+  const [accounts, setAccounts] = useState([]);
+
   const [account, setAccount] = useState('');
   const [currency, setCurrency] = useState('');
+
+  const accountsGroupsServices = new AccountsGroupsServices();
+
+  useEffect(() => {
+    accountsGroupsServices.find().then(result => setAccountsGroups(result));
+  }, []);
 
   useEffect(() => {
     props.onChange(
       account,
       currency
-    )
+    );
     // eslint-disable-next-line
   }, [account, currency]);
+
+  useEffect(() => {
+    accountsGroupsServices.find().then(result => setAccountsGroups(result));
+    // eslint-disable-next-line
+  }, [account]);
 
   return (
     <form autoComplete="off">
@@ -32,17 +48,16 @@ export default props => {
         <InputLabel htmlFor="origin-account">Account</InputLabel>
         <Select
           value={account}
-          onChange={e => { setAccount(e.target.value) }}
-          inputProps={{
-            name: 'origin-account',
-            id: 'origin-account',
-          }}
+          onChange={e => setAccount(e.target.value) }
           className={classes.select}
         >
-          <MenuItem value={20}>Bitso</MenuItem>
-          <MenuItem value={30}>HSBC</MenuItem>
-          <MenuItem value={10}>Efectivo</MenuItem>
-          <MenuItem value={30}>Bancomer</MenuItem>
+          {
+            accountsGroups.map(({ id, name }) => {
+              return (
+                <MenuItem value={id}>{name}</MenuItem>
+              )
+            })
+          }
         </Select>
       </FormControl>
 
