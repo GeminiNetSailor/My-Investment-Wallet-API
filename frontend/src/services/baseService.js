@@ -8,7 +8,7 @@ export default class BaseService {
 	}
 
 	find( id ) {
-		console.log(this)
+		console.log(id)
 		const path = this.url.version + this.url.route + ( id ? `${id}/` : "" ) + ( this.url.subRoute ? `${this.url.subRoute}` : "" )
 		var url = new URL(path, this.baseUrl);
 		// if (params) Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));

@@ -24,7 +24,6 @@ export default props => {
   const [currency, setCurrency] = useState('');
 
   const accountsGroupsServices = new AccountsGroupsServices();
-
   useEffect(() => {
     accountsGroupsServices.find().then(result => setAccountsGroups(result));
   }, []);
@@ -38,7 +37,7 @@ export default props => {
   }, [account, currency]);
 
   useEffect(() => {
-    accountsGroupsServices.accountsServices.find(account).then(result => setAccounts(result));
+    if(account) accountsGroupsServices.find(account).then(result => setAccounts(result['account']));
     // eslint-disable-next-line
   }, [account]);
 
@@ -54,7 +53,7 @@ export default props => {
           {
             accountsGroups.map(({ id, name }) => {
               return (
-                <MenuItem value={id}>{name}</MenuItem>
+                <MenuItem key={id} value={id}>{name}</MenuItem>
               )
             })
           }
@@ -71,7 +70,7 @@ export default props => {
           {
             accounts.map(({ id, name }) => {
               return (
-                <MenuItem value={id}>{name}</MenuItem>
+                <MenuItem key={id} value={id}>{name}</MenuItem>
               )
             })
           }

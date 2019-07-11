@@ -22,10 +22,10 @@ class AccountsGroupSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(
         read_only=True
     )
-    account_set = AccountSerializer(many=True, read_only=True)
+    account = AccountSerializer(many=True, read_only=True)
     class Meta:
         model = models.AccountsGroup
-        fields = ('id', 'name', 'account_set')
+        fields = ('id', 'name', 'account_set', 'account')
 
 
 class TransactionSerializer(serializers.ModelSerializer):

@@ -11,5 +11,6 @@ router.register(r'accounts', views.AccountViewSet)
 router.register(r'transactions', views.TransactionViewSet)
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('/accounts-groups/<id>/accounts/', views.BookingsForHouseListView),
+    path('', include(router.urls))
 ]
